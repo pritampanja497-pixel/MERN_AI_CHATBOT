@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { config } from "dotenv";
 import morgan from "morgan";
 import appRouter from "./routes/index.js";
@@ -19,7 +19,7 @@ if (!process.env.MONGODB_URL && fs.existsSync(backendEnvPath)) {
 const app = express();
 
 // health check endpoint for cloud platforms like Render
-app.get("/health", (req, res) => {
+app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
 });
 
@@ -31,7 +31,10 @@ const allowedOrigins = [
 
 app.use(
   cors({
-    origin: (origin, callback) => {
+    origin: (
+      origin: string | undefined,
+      callback: (err: Error | null, allow?: boolean) => void
+    ) => {
       // Allow requests with no origin or matching configured origins
       if (!origin || allowedOrigins.includes(origin) || allowedOrigins.length === 0) {
         callback(null, true);
@@ -63,7 +66,7 @@ const frontendDist = candidateFrontendPaths.find((dir) => fs.existsSync(dir));
 
 if (frontendDist) {
   app.use(express.static(frontendDist));
-  app.get("*", (req, res, next) => {
+  app.get("*", (req: Request, res: Response, next: NextFunction) => {
     if (req.path.startsWith("/api")) {
       return next();
     }

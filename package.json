@@ -4,9 +4,9 @@
   "description": "MERN Stack AI Chatbot",
   "private": true,
   "scripts": {
-    "install:backend": "npm install --prefix Backend",
-    "install:frontend": "npm install --prefix Frontend",
-    "install:all": "npm install --prefix Backend && npm install --prefix Frontend",
+    "install:backend": "npm install --include=dev --prefix Backend",
+    "install:frontend": "npm install --include=dev --prefix Frontend",
+    "install:all": "npm install --include=dev --prefix Backend && npm install --include=dev --prefix Frontend",
     "build:backend": "npm run build --prefix Backend",
     "build:frontend": "npm run build --prefix Frontend",
     "build": "npm run build:frontend && npm run build:backend",

@@ -17,12 +17,12 @@ export const generateChatCompletion = async (
         .json({ message: "User not registered OR Token malfunctioned" });
 
     // grab chats of user
-    const chats: OpenAI.Chat.ChatCompletionMessageParam[] = user.chats.map(
-      ({ role, content }) => ({
-        role: role as "user" | "assistant" | "system",
-        content,
-      })
-    );
+    const chats: OpenAI.Chat.ChatCompletionMessageParam[] = (
+      user.chats as any[]
+    ).map(({ role, content }: any) => ({
+      role: role as "user" | "assistant" | "system",
+      content,
+    }));
     chats.push({ content: message, role: "user" });
 
     // send all chats with new one to openAI API
